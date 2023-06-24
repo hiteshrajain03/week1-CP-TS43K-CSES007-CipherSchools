@@ -1,0 +1,66 @@
+Q1 merge k sorted LL ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    ListNode* merge(ListNode* a,ListNode* b){
+        if(!a)return b;
+        if(!b)return a;
+        if(a->val <= b->val){
+            a->next = merge(a->next,b);
+            return a;
+        }else{
+            b->next = merge(a,b->next);
+            return b;
+        }
+        return NULL;
+    }
+    ListNode* mergeKLists(vector<ListNode*>& v) {
+        if(v.size()==0)return NULL;
+        else if(v.size()==1)return v[0]; 
+        for(int i = 1; i < v.size(); i++){
+            v[0] = merge(v[0],v[i]);
+        }
+        return v[0];
+    }
+};
+
+
+Q2 reverse LL in k groups //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(head == NULL || head->next == NULL) {
+            return head;
+        }
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+
+        ListNode* prev = dummy;
+        ListNode* cur = dummy;
+        ListNode* nxt = dummy;
+
+        int count = 0;
+        while(cur->next != NULL) {
+            cur = cur->next;
+            count++;
+        }
+
+        while(count >= k) {
+            cur = prev->next;
+            nxt = cur->next;
+            for(int i = 1; i < k; i++) {
+                cur->next = nxt->next;
+                nxt->next = prev->next;
+                prev->next = nxt;
+                nxt = cur->next;
+            }
+            prev = cur;
+            count -= k;
+        }
+        return dummy->next;
+    }
+};
+
+
+
