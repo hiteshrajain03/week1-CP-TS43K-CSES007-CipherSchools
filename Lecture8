@@ -1,0 +1,101 @@
+Q1 Generate Paranthesis ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    vector<string>ans;
+
+    void solve(int n, string &str, int open, int close){
+        if(open == close and open == n - 1){
+            ans.push_back(str);
+            return;
+        }
+        if(open < n){
+            str.push_back('(');
+            solve(n, str, open + 1, close);
+            str.pop_back();
+
+        }
+        if(open > close){
+            str.push_back(')');
+            solve(n, str, open, close + 1);
+            str.pop_back();
+        }
+    }
+
+    vector<string> generateParenthesis(int n) {
+        ans.clear();
+        ans.resize(0);
+        string str;
+        solve(n+1, str, 0, 0);
+        return ans;
+    }
+};
+
+Q2 ph. keypad ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> ref = {"", "", "abc", "def", "ghi", "jkl",
+                              "mno", "pqrs", "tuv", "wxyz"};
+        
+        vector<string> mappings;
+        for (char c : digits){
+            mappings.push_back(ref[c - '0']);
+        }
+        vector<int> indexes(digits.size(), 0);
+        
+        vector<string> ans;
+
+        // base case
+        if (digits.size() == 0){
+            return ans;
+        }
+        
+        while (indexes[0] != mappings[0].size()){
+            string combo;
+            for (int i = 0; i < digits.size(); ++i){
+                combo += mappings[i][indexes[i]];
+            }
+            ans.push_back(combo);
+            int check = digits.size()-1;
+            ++indexes[check];
+            while (indexes[check] == mappings[check].size()){
+                if (check == 0){
+                    break;
+                }
+                indexes[check] = 0;
+                ++indexes[check-1];
+                --check;
+            }
+        }   
+        return ans;
+    }
+};
+
+Q3 permute /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <bits/stdc++.h>
+using namespace std;
+void permute(string& a, int l, int r)
+{
+	if (l == r)
+		cout << a << endl;
+	else {
+		for (int i = l; i <= r; i++) {
+
+			swap(a[l], a[i]);
+			permute(a, l + 1, r);
+			swap(a[l], a[i]);
+		}
+	}
+}
+int main()
+{
+	string str = "ABC";
+	int n = str.size();
+	permute(str, 0, n - 1);
+	return 0;
+}
+
+
