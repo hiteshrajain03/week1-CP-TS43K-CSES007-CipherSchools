@@ -1,0 +1,65 @@
+Q1 Unique Paths /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    int rec(int i, int j, int m, int n, vector<vector<int>> &dp) {
+        if(i >= m || j >= n) {
+            return 0;
+        }
+        if(i == m - 1 && j == n - 1) {
+            return 1;
+        }
+        if(dp[i][j] != -1) {
+            return dp[i][j];
+        }
+        dp[i][j] = rec(i + 1, j, m, n, dp) + rec(i, j + 1, m, n, dp);
+        return dp[i][j];
+    }
+
+    int uniquePaths(int m, int n) {
+        vector<vector<int>> dp(m, vector<int> (n, -1));
+        int ans = rec(0, 0, m, n, dp);
+        return ans;
+    }
+};
+
+Q2 N Queen /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    void solve(int col, vector<string>& board, vector<vector<string>>& ans, int n,
+               vector<int>& left, vector<int>& ud, vector<int>& ld) {
+        if(col == n) {
+            ans.push_back(board);
+            return;
+        }
+        for(int row = 0; row < n; row++) {
+            if(left[row] == 0 && ld[row + col] == 0 && ud[(n - 1) + col - row] == 0) {
+                left[row] = 1;
+                ld[row + col] = 1;
+                ud[(n - 1) + col - row] = 1;
+                board[row][col] = 'Q';
+                solve(col + 1, board, ans, n, left, ud, ld);
+                board[row][col] = '.';
+                left[row] = 0;
+                ld[row + col] = 0;
+                ud[(n - 1) + col - row] = 0;
+            }
+        }
+    }
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string> board(n);
+        string s(n, '.');
+        for(int i = 0; i < n; i++) {
+            board[i] = s;
+        }
+        vector<int> left(n, 0), ud(2 * n + 1, 0), ld(2* n + 1, 0);
+        solve(0, board, ans, n, left, ud, ld);
+        return ans;
+    }
+};
+
+
+
