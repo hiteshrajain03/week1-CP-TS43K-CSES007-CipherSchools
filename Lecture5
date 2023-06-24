@@ -1,0 +1,27 @@
+Trapping the rain water Problem
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        int left = 0;
+        int right = n - 1;
+        int lm = height[0];
+        int rm = height[n - 1];
+        int ans = 0;
+        while(left != right) {
+            lm = max(lm, height[left]);
+            rm = max(rm, height[right]);
+            if(height[left] < height[right]) {
+                ans += min(lm, rm) - height[left];
+                left++;
+            }
+            else {
+                ans += min(lm, rm) - height[right];
+                right--;
+            }
+        }
+        return ans;
+
+    }
+};
