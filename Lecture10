@@ -1,0 +1,101 @@
+Q1 Word Search ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    pair<int, int> dir[4] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+
+    bool searching(int x, int i, int j, vector<vector<char>>& board, string word, vector<vector<bool>>& visited) {
+        if(word.length() == x) {
+            return true;
+        }
+        if(i < 0 ||j < 0 || 
+           i >= board.size() || j > board[0].size() || visited[i][j] == true || word[x] != board[i][j]) {
+            return false;
+        }
+        
+        visited[i][j] = true;
+        for(int k = 0; k < 4; k++) {
+            if(searching(x + 1, i + dir[k].first, j + dir[k].second, board, word, visited) == true) {
+                return true;
+            }
+        }
+        visited[i][j] = false;
+        return false;
+    }
+
+    bool exist(vector<vector<char>>& board, string word) {
+        int m = board.size();
+        int n = board[0].size();
+        if(m * n < word.length()) {
+            return false;
+        }
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(board[i][j] == word[0]) {
+                    if(searching(0, i, j, board, word, visited) == true) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+};
+
+Q2 power(x,n) //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        double ans = 1.0;
+        long long nn = n;
+        if(n < 0) {
+            nn = -1 * nn;
+        }
+        while(nn > 0) {
+            if(nn % 2 == 0) {
+                x = x * x;
+                nn = nn / 2;
+            }
+            else {
+                ans = ans * x;
+                nn = nn - 1;
+            }
+        }
+        if(n < 0) {
+            ans = (double)1.0 / (double)(ans);
+        }
+        return ans;
+    }
+};
+
+Q3 power set //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    void s(int i, vector<int>& a, vector<vector<int>>& ans, vector<int>& ds) {
+        if(i == a.size()) {
+            ans.push_back(ds);
+            return;
+        }
+        ds.push_back(a[i]);
+        s(i + 1, a, ans, ds);
+        ds.pop_back();
+        s(i + 1, a, ans, ds);
+    }
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> ans;
+        vector<int> ds;
+        s(0, nums, ans, ds);
+        return ans;
+    }
+};
+
+
+
+
+
