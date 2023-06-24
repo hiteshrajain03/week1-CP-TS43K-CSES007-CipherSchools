@@ -1,0 +1,116 @@
+Q1 Sorting Prolem //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int n = nums.size();
+        int low = 0;
+        int mid = 0;
+        int high = n - 1;
+        while(mid <= high) {
+            if(nums[mid] == 0) {
+                swap(nums[mid], nums[low]);
+                mid++;
+                low++;
+            }
+            else if(nums[mid] == 1) {
+                mid++;
+            }
+            else {
+                swap(nums[mid], nums[high]);
+                high--;
+            }
+        }
+    }
+};
+
+Q2 Set Matrix zero///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        vector<int> r;
+        vector<int> c;
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+                if(matrix[i][j] == 0) {
+                    r.push_back(i);
+                    c.push_back(j);
+                }
+            }
+        }
+        for(int i = 0; i < r.size(); i++) {
+            for(int k = 0; k < matrix[0].size(); k++) {
+                        matrix[r[i]][k] = 0;
+                    }
+                    for(int l = 0; l < matrix.size(); l++) {
+                        matrix[l][c[i]] = 0;
+                    }
+        }
+    }
+};
+
+Q3 Search 2D Matrix//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int l = 0;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int h = m * n - 1;
+        while(l <= h) {
+            int mid = l + (h - l) / 2;
+            int r = mid / n;
+            int c = mid % n;
+            if(matrix[r][c] == target) {
+                return true;
+            }
+            else if(target < matrix[r][c]) {
+                h = mid - 1;
+            }
+            else {
+                l = mid + 1;
+            }
+        }
+        return false;
+    }
+};
+
+Q4 Search in Sorted Rotated Array /////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int l = 0;
+        int h = nums.size() - 1;
+        while(l <= h) {
+            int mid = l + (h - l) / 2;
+            if(nums[mid] == target) {
+                return mid;
+            }
+            if(nums[l] <= nums[mid]) {
+                if(target >= nums[l] && target < nums[mid]) {
+                    h = mid - 1;
+                }
+                else {
+                    l = mid + 1;
+                }
+            }
+            else {
+                if(target > nums[mid] && target <= nums[h]) {
+                    l = mid + 1;
+                }
+                else {
+                    h = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+};
+
+
+
+
+
